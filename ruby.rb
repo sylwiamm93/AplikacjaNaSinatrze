@@ -6,6 +6,11 @@ get '/' do
   'Hello world!'
 end
 
+# akcja, route /
+get '/zmiana!' do
+  ':)'
+end
+
 #akcja pod route, /o-mnie
 get '/o-mnie' do
   'Jestem Sylwia!!'
