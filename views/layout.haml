@@ -1,0 +1,27 @@
+%html
+  %head
+    %title Strona główna
+    %link{:href => "/bootstrap/css/bootstrap.css", :media => "screen", :rel => "StyleSheet", :type => "text/css"}
+    %link{:href => "http://fonts.googleapis.com/css?family=Flamenco", :rel => "stylesheet", :type => "text/css"}
+    %link{:href => "/style/stajl.css", :media => "screen", :rel => "StyleSheet", :type => "text/css"}
+          
+  %body
+    .wrapper
+      %h1
+        %a{:href => "/"} Blog
+      %nav
+        %ul
+          %li
+            %span.glyphicon.glyphicon-user
+              %a{:href => "/o-mnie"} O mnie
+          %li
+            %span.glyphicon.glyphicon-th
+              %a{:href => "/formularz"} Oblicz
+          %li
+            %span.glyphicon.glyphicon-plus
+              %a{:href => "/nowy_post"} Nowy Post
+          %li
+            %span.glyphicon.glyphicon-list-alt
+              %a{:href => "/lista_postow"} Lista Postów
+    .content
+      = yield

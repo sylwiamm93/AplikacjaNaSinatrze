@@ -11,18 +11,20 @@ class Post
     property :body, Text
     property :created_at, DateTime
 end
-
 DataMapper.finalize
 Post.auto_upgrade!
 
+#set :layout_engine => :erb, :layout => :index
 # akcja, route /
 get '/' do
-  'Hello world!'
+  haml :index
+#  'Hello world!'
 end
 
 #akcja pod route, /o-mnie
 get '/o-mnie' do
   'Jestem Sylwia!!'
+  haml :index
 end
 
 get '/hello/:name' do
@@ -32,35 +34,55 @@ get '/hello/:name' do
 end
 
 get '/formularz' do
-	erb :formularz
+	haml :formularz
 end
-
-get '/petla' do
-	erb :petla
-end
-
-
-get '/lista_postow' do
-	lista = { :imie => "Sylwia", :age => "20" }
-	haml :lista_postow, :locals => { :hash => lista }		
-end
-
-get '/posty' do
-	erb :posty
-end
-
-get '/posty/nowy' do
-	erb :nowy_post
-end
-
-post '/posty/utworz' do
-
-	erb :nowy_post
-end
-
 
 post '/oblicz' do
 a = params[:liczba1].to_i
 b = params[:liczba2].to_i
 (a*b).to_s
 end
+
+get '/petla' do
+	erb :petla
+end
+#---
+
+
+get '/nowy_post' do
+  haml :nowy_post
+end
+
+post '/dodaj' do
+ post = Post.create(:title=>params[:tytul], :body=>params[:tresc])
+ redirect "/lista_postow"
+end
+
+get '/lista_postow' do 
+  @posts = Post.all
+  haml :lista_postow
+end
+
+get '/:id/edit' do
+  @post = Post.get(params[:id])
+  haml :edit
+end
+
+post '/:id/update' do
+  @post = Post.get params[:id]
+  @post.update(params[:posty]) 
+  redirect "/lista_postow"
+end
+
+post '/:id/delete' do
+  @post = Post.get(params[:id])
+  @post.destroy
+  redirect "/lista_postow"
+end
+
+get '/:id/view' do
+  @post = Post.get params[:id]
+  haml :view
+end
+
+

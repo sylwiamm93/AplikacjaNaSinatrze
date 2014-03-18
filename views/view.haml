@@ -1,0 +1,7 @@
+
+%h2
+	%strong=@post.title
+	.date
+		=@post.created_at.strftime("%d %b %Y %H:%M")
+%p
+	=@post.body
