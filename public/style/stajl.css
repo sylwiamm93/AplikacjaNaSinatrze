@@ -22,6 +22,7 @@ h1 {
           }
 
   .content h1 {
+
           	font-size: 50px;
           	font-family: 'Flamenco';
           	padding: 2px 26px 2px 90px;
@@ -65,10 +66,18 @@ a:hover{
 }
 
          
-          
+          #komcie {
+                      width: 44%;
+margin-right: auto;
+margin-left: auto;
+          font-size: 11px;
+          text-align: center;
+          height: auto;
+          }
           
           
          .form-control {
+
           text-align: center;
           height: auto;
 
@@ -130,4 +139,12 @@ font-size: 10px;
 
 .date {
   font-size: 20px;
+}
+
+#koment {
+  background-color: rgb(223, 223, 223);
+}
+
+.btn-group {
+  margin-left: 46%;
 }
