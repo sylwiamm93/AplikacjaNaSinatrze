@@ -1,0 +1,14 @@
+
+%h2 
+	Lista postów publiczna
+
+%ul
+	- for p in @posts
+		%li
+			%strong
+				%a{:href => "/posts/#{p.id}", :id => "tyt"}= p.title 
+			%a{:href => "/posts/#{p.id}/edit"}Edytuj 
+			%a.del{:href => "/posts/#{p.id}/destroy", } usun posta
+
+		
+

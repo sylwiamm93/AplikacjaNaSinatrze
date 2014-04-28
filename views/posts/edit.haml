@@ -3,7 +3,7 @@
 	=@post.title
 	
 .form-group
-	%form{ :action => "/#{@post.id}/update", :method => "post", :class=>"form-control" }
+	%form{ :action => "/posts/#{@post.id}/update", :method => "post", :class=>"form-control" }
 		%label Tytuł
 		%input{:name => "posty[title]", :type => "text", :value  => @post.title, :class=>"form-control"}
 		%label Treść

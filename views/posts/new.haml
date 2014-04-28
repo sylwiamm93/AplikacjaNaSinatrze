@@ -1,0 +1,18 @@
+%h2 Utwórz nowego posta
+.form-group
+	%form{ :action=>"/posts/create", :method=>"post", :class=>"form-control"}
+		%label Tytuł
+		%input{ :name=>"tytul", :type=>"text", :placeholder=>"Tytuł", :class=>"form-control"}
+		%br	
+		%label Post
+		%input{ :name=>"tresc", :type=>"text", :placeholder=>"Treść", :class=>"form-control", :id=>"tresc"}
+		%br
+		%label Kategoria
+		%select{:name=>"category_id", :class=>"form-control"}
+			- for c in @cats
+				%option{:value=> c.id} 
+					=c.title
+		%input{:id => "category_id",:name=> :category_id, :type=>:hidden, :value=> c.id}
+		%br
+		%button{:type=>"submit"} Dodaj
+/ 

@@ -1,0 +1,17 @@
+%h2
+	Kategorie
+
+%form.form-inline{:action=>"/categories/create", :method=>"post", :style => "text-align: center"}
+	.form-group
+		%input{:name=>"nazwa", :type=>"text", :placeholder=>"Dodaj kategorie", :class=>"form-control"}
+	%button.btn.btn-danger{:type=>"submit"} DODAJ
+%br
+%br
+%h3{:style => "text-align: center"}
+	Dodane kategorie
+
+%div
+	%ul.list-group
+		- for @c in @cats 
+			=partial 'categories/list'
+
