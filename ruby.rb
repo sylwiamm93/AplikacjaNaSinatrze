@@ -1,56 +1,67 @@
 require 'sinatra'
-require 'sinatra/reloader'
+# require 'sinatra/reloader'
+require 'dm-sqlite-adapter'
 require 'data_mapper'
 require 'pry'
 require 'json'
 require 'sinatra/partial'
+require 'bundler'
+Bundler.require
+require './model'
 
 DataMapper::setup(:default, "sqlite3://#{Dir.pwd}/blog.db")
 
-class Post
-    include DataMapper::Resource
-    property :id, Serial
-    property :title, String
-    property :body, Text
-    property :publiczny, Text
-    property :created_at, DateTime
-    has n, :comments
-    belongs_to :category
+class SinatraWardenExample < Sinatra::Base
+  use Rack::Session::Cookie, secret: "nothingissecretontheinternet"
+  use Rack::Flash, accessorize: [:error, :success]
+
+  use Warden::Manager do |config|
+  config.serialize_into_session{|user| user.id }
+  config.serialize_from_session{|id| User.get(id) }
+  config.scope_defaults :default,
+    strategies: [:password],
+    action: 'auth/unauthenticated'
+  config.failure_app = self
+  end
+
+  Warden::Manager.before_failure do |env,opts|
+      env['REQUEST_METHOD'] = 'POST'
+  end
+
+  Warden::Strategies.add(:password) do
+      def valid?
+        params['user']['username'] && params['user']['password']
+      end
+
+      def authenticate!
+        user = User.first(username: params['user']['username'])
+
+        if user.nil?
+          fail!("The username you entered does not exist.")
+          flash.error = ""
+        elsif user.authenticate(params['user']['password'])
+          flash.success = "Successfully Logged In"
+          success!(user)
+        else
+          fail!("Could not log in")
+        end
+      end
+  end
 end
 
-class Comment
-    include DataMapper::Resource
-    property :id, Serial
-    property :user, String
-    property :body, Text
-    belongs_to :post # post_id integer
-    property :created_at, DateTime
-end
-
-class Category
-    include DataMapper::Resource
-    property :id, Serial
-    property :title, String
-    has n, :posts
-end
-
-DataMapper.finalize
-Post.auto_upgrade!
-Comment.auto_upgrade!
-Category.auto_upgrade!
 
 
 if Category.count == 0
-  @cat = Category.create( :title=>"Wszystkie")
+  Category.create( :title=>"Wszystkie")
 end
 
 
 #set :layout_engine => :erb, :layout => :index
 # akcja, route /
-get '/' do
-  haml :index
-#  'Hello world!'
-end
+# get '/' do
+#   haml :index
+# #  'Hello world!'
+# end
 
 #akcja pod route, /o-mnie
 get '/o-mnie' do
@@ -69,14 +80,14 @@ get '/posts/new' do
 end
 
 post '/posts/create' do
- @cats = Category.all.get params[:category_id]
- post = Post.create(:title=>params[:tytul], :body=>params[:tresc], :category_id=>params[:category_id])
+ Post.create(:title=>params[:tytul], :body=>params[:tresc], :category_id=>params[:category_id])
  redirect "/posts"
 end
 
 #pojedynczy post
 get '/posts/:id' do
   @post = Post.get params[:id]
+  # binding.pry
   @comments = @post.comments
   haml :'posts/show'
 end
@@ -108,7 +119,7 @@ post '/posts/:id/notpublic' do
 end
 
 # posty tylko publiczne
-get '/posts/public' do 
+get '/' do 
   @posts = Post.all(:publiczny => "tak")
   haml :'posts/show_public'
 end
@@ -165,9 +176,8 @@ get '/categories/:id/show' do
   haml :'categories/show'
 end
 
-# post '/post/:id/category_update' do
-#   @post = Post.get params[:post_id]
-#   @category = Category.get params[:id]
-#   @post.update( @post.category << @category)
-#   @post.save
-# end
+# ------LOGOWANIE
+
+get '/auth/login' do 
+  haml :login
+end

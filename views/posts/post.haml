@@ -7,6 +7,7 @@
 		%li
 			%strong
 				%a{:href => "/posts/#{p.id}", :id => "tyt"}= p.title 
+			Kategoria: #{p.category.title}
 			%a{:href => "/posts/#{p.id}/edit"}Edytuj 
 			%a.del{:href => "/posts/#{p.id}/destroy" } usun posta
 			- if p.publiczny=="tak"	
