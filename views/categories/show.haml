@@ -1,0 +1,7 @@
+%h2
+	=@cat.title
+%ul.list-group
+	-for p in @posts
+		%li.list-group-item
+			%a{:href=>"/posts/#{p.id}"}
+				=p.title

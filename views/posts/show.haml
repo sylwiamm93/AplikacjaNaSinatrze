@@ -1,0 +1,34 @@
+
+%h2
+	%strong=@post.title
+	.date
+		=@post.created_at.strftime("%d %b %Y %H:%M")
+	%span.label.label-warning
+		%a{:href=>"/categories/#{@post.category.id}/show"}
+			=@post.category.title
+%p
+	=@post.body
+%hr
+
+%strong
+	%h3{:style => "text-align: center"} ZOSTAW KOMENTARZ
+
+.form-group
+	%form{ :action=>"/comment/create", :method=>"post", :class=>"form-control", :id => "komcie"}
+		%label{:for => "user"} User
+		%input{:id => "user", :name=>"user", :type=>"text", :placeholder=>"Nick", :class=>"form-control"}
+		%br	
+		%label{:for => "kom"} Komentarz
+		
+		%input{:id => "kom", :name=> :komentarz, :type=> "text", :placeholder=> "Komentarz", :class=>"form-control"}
+		%input{:id => "post_id", :name=> :post_id, :type => :hidden, :value => @post.id}
+		%br
+		%button.kom{:type=>"submit"} Dodaj
+
+%strong
+	%h3{:style => "text-align: center"} KOMENTARZE
+
+%ul{:id => "koment"}
+	- for @c in @comments
+		= partial 'comments/show'
+		
