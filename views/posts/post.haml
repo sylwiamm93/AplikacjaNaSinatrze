@@ -1,25 +1,26 @@
 
-%h2 
+%h2
 	Lista Postów
 
 %ul{:class=>"list-group"}
 	- for p in @posts
 		%li
 			%strong
-				%a{:href => "/posts/#{p.id}", :id => "tyt"}= p.title 
+				
+				%a{:href => "/posts/#{p.id}", :id => "tyt"}= p.title
 			Kategoria: #{p.category.title}
-			%a{:href => "/posts/#{p.id}/edit"}Edytuj 
+			%a{:href => "/posts/#{p.id}/edit"}Edytuj
 			%a.del{:href => "/posts/#{p.id}/destroy" } usun posta
-			- if p.publiczny=="tak"	
+			- if p.publiczny=="tak"
 				%a.publ{:href=>"/posts/#{p.id}/notpublic"}Uczyn niepublicznym
 			- else
 				%a.publ{:href=>"/posts/#{p.id}/public"}Uczyn publicznym
-			%span.badge 
-			%br				
+			%span.badge
+			%br
 			%br
 			%hr
 
-		
+
 / .form-group
 / 	%form.form-control{:method=>"post", :action=>"/post/#{p.id}/category_update"}
 / 		%label Wybierz kategorie

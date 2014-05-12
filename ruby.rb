@@ -80,7 +80,12 @@ get '/posts/new' do
 end
 
 post '/posts/create' do
+<<<<<<< HEAD
  Post.create(:title=>params[:tytul], :body=>params[:tresc], :category_id=>params[:category_id])
+=======
+ Post.create(:title => params[:tytul], :body => params[:tresc], :category_id => params[:category_id] )
+
+>>>>>>> 0b86ae2f21b6c92c09f830c5c0048457c0889929
  redirect "/posts"
 end
 
@@ -93,24 +98,24 @@ get '/posts/:id' do
 end
 
 #wszystkie posty
-get '/posts' do 
+get '/posts' do
   # @cats = Category.all
   @posts = Post.all
   haml :'posts/post'
 end
 
 # uczyn posta publicznym
-post '/posts/:id/public' do 
+post '/posts/:id/public' do
  @post = Post.get(params[:id])
  @post.update(:publiczny => "tak")
  content_type :json
  { :id => @post.id, :publiczny => @post.publiczny}.to_json
- 
+
 end
 
 
 # uczyn posta niepublicznym
-post '/posts/:id/notpublic' do 
+post '/posts/:id/notpublic' do
  @post = Post.get(params[:id])
  @post.update(:publiczny => "nie")
  content_type :json
@@ -119,7 +124,11 @@ post '/posts/:id/notpublic' do
 end
 
 # posty tylko publiczne
+<<<<<<< HEAD
 get '/' do 
+=======
+get '/posts/public' do
+>>>>>>> 0b86ae2f21b6c92c09f830c5c0048457c0889929
   @posts = Post.all(:publiczny => "tak")
   haml :'posts/show_public'
 end
@@ -133,7 +142,7 @@ end
 
 post '/posts/:id/update' do
   @post = Post.get params[:id]
-  @post.update(params[:posty]) 
+  @post.update(params[:posty])
   redirect "/posts"
 end
 
@@ -145,7 +154,7 @@ get '/posts/:id/destroy' do
   # binding.pry
   # redirect "/lista_postow"
 end
- 
+
                           #COMMENTS
 
 post '/comment/create' do
